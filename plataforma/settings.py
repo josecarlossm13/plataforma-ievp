@@ -237,7 +237,7 @@ STATIC_ROOT = str(BASE_DIR / "staticfiles")
 # https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = [str(BASE_DIR / "plataforma/static")]
+STATICFILES_DIRS = [str(BASE_DIR / "static")]
 # https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
@@ -333,7 +333,7 @@ GS_BUCKET_NAME = os.getenv("GS_BUCKET_NAME")
 
 # Carregar credenciais a partir da env com o JSON completo
 if os.path.exists("gs_credentials.json"):
-    print("USING LOCAL GS CREDENTIALS")
+    #print("USING LOCAL GS CREDENTIALS")
     GS_CREDENTIALS = service_account.Credentials.from_service_account_file(
         "gs_credentials.json"
     )
@@ -366,22 +366,6 @@ STORAGES = {
     "staticfiles": {
         "BACKEND": STATICFILES_STORAGE,
     }
-    # STATIC (collectstatic) → cache longa + immutable (exige colocar versões nas URLs dos estáticos nos templates!!CSS,JS,URLs)
-    # "staticfiles": {
-    #     #"BACKEND": "storages.backends.gcloud.GoogleCloudManifestStaticStorage",
-    #     "BACKEND": "storages.backends.gcloud.GoogleCloudStorage",
-    #
-    #     "OPTIONS": {
-    #         "bucket_name": GS_BUCKET_NAME,
-    #         "credentials": GS_CREDENTIALS,
-    #         "location": "static",
-    #         "default_acl": None,          # Uniform access
-    #         "querystring_auth": False,    # para estáticos públicos
-    #         "object_parameters": {
-    #             "cache_control": "public, max-age=31536000, immutable"      # 1 ano
-    #         },
-    #     },
-    # },
 }
 
 # URLs públicas (se o bucket tiver leitura pública)
