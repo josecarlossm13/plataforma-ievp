@@ -1,0 +1,17 @@
+# Ignora arquivos do macOS
+.DS_Store
+
+# Ignora arquivos da cache do Python
+__pycache__/
+*.py[cod]
+
+# Ignora arquivos do ambiente virtual
+venv/
+env/
+
+
+.env
+staticfiles/
+db_test.sqlite3
+/plataforma/staticfiles/
+/gs_credentials.json

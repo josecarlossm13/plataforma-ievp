@@ -1,0 +1,359 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+{% get_available_languages as LANGUAGES %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}{% trans "IEV Platform" %}{% endblock %}</title>
+    <style>
+      :root {
+        --bg-url: url("{% static 'core/img/circuit-bg.PNG' %}?v=1.1");
+      }
+    </style>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css">
+    <!-- Bootstrap Table CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.1/dist/bootstrap-table.min.css">
+    <!-- DataTables 2.3.2 CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/2.3.2/css/dataTables.dataTables.min.css">
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{% static 'core/styles.css' %}?v=1.1">
+
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="site">
+{#<body>#}
+
+<header>
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container-fluid">
+      <a class="navbar-brand text-white fw-bold fs-5" href="{% url 'home' %}">{% trans "IEV Platform" %}</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <!-- ESQUERDA -->
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'home' %}">{% trans "Home" %}</a></li>
+          <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'area-list' %}active{% endif %}" href="{% url 'area-list' %}">{% trans "Areas" %}</a></li>
+          <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'subarea-list' %}active{% endif %}" href="{% url 'subarea-list' %}">{% trans "Subareas" %}</a></li>
+          <li class="nav-item"><a class="nav-link {% if request.resolver_match.url_name == 'term-list' %}active{% endif %}" href="{% url 'term-list' %}">{% trans "Terms" %}</a></li>
+        </ul>
+
+        <!-- DIREITA -->
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+          <li class="nav-item me-2">
+            <form class="d-flex align-items-center" method="GET" action="{% url 'term-list' %}">
+              <input name="q" class="form-control me-2" type="search" style="width: auto; min-width: 220px;" placeholder="{% trans 'Search term/description' %}" aria-label="Search" value="{{ search_query|default:'' }}">
+              <select name="area" class="form-select form-select-sm me-2" style="width: auto; min-width: 160px;">
+                <option value="">{% trans "All Areas" %}</option>
+                {% for area in all_areas %}
+                  <option value="{{ area.id }}" {% if area.id|stringformat:"s" == selected_area_id %}selected{% endif %}>{{ area.id }}</option>
+                {% endfor %}
+              </select>
+              <button class="btn btn-outline-success btn-sm" type="submit">{% trans "Search" %}</button>
+            </form>
+          </li>
+
+            <li class="nav-item dropdown me-2">
+              <a class="nav-link dropdown-toggle btn btn-outline-secondary btn-sm" href="#" id="languageDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {% if LANGUAGE_CODE == "pt" %}🇵🇹
+                {% elif LANGUAGE_CODE == "pt-br" %}🇧🇷
+                {% elif LANGUAGE_CODE == "en" %}🇬🇧
+                {% elif LANGUAGE_CODE == "es" %}🇪🇸
+                {% elif LANGUAGE_CODE == "fr" %}🇫🇷
+                {% elif LANGUAGE_CODE == "sq" %}🇦🇱
+                {% elif LANGUAGE_CODE == "ar" %}🇸🇦
+                {% elif LANGUAGE_CODE == "hy" %}🇦🇲
+                {% elif LANGUAGE_CODE == "bs" %}🇧🇦
+                {% elif LANGUAGE_CODE == "bg" %}🇧🇬
+                {% elif LANGUAGE_CODE == "zh-hans" %}🇨🇳
+                {% elif LANGUAGE_CODE == "hr" %}🇭🇷
+                {% elif LANGUAGE_CODE == "da" %}🇩🇰
+                {% elif LANGUAGE_CODE == "nl" %}🇳🇱
+                {% elif LANGUAGE_CODE == "et" %}🇪🇪
+                {% elif LANGUAGE_CODE == "fi" %}🇫🇮
+                {% elif LANGUAGE_CODE == "de" %}🇩🇪
+                {% elif LANGUAGE_CODE == "ka" %}🇬🇪
+                {% elif LANGUAGE_CODE == "el" %}🇬🇷
+                {% elif LANGUAGE_CODE == "hu" %}🇭🇺
+                {% elif LANGUAGE_CODE == "is" %}🇮🇸
+                {% elif LANGUAGE_CODE == "ga" %}🇮🇪
+                {% elif LANGUAGE_CODE == "it" %}🇮🇹
+                {% elif LANGUAGE_CODE == "ja" %}🇯🇵
+                {% elif LANGUAGE_CODE == "ko" %}🇰🇷
+                {% elif LANGUAGE_CODE == "lv" %}🇱🇻
+                {% elif LANGUAGE_CODE == "lt" %}🇱🇹
+                {% elif LANGUAGE_CODE == "mk" %}🇲🇰
+                {% elif LANGUAGE_CODE == "nb" %}🇳🇴
+                {% elif LANGUAGE_CODE == "pl" %}🇵🇱
+                {% elif LANGUAGE_CODE == "ro" %}🇷🇴
+                {% elif LANGUAGE_CODE == "ru" %}🇷🇺
+                {% elif LANGUAGE_CODE == "sr" %}🇷🇸
+                {% elif LANGUAGE_CODE == "sk" %}🇸🇰
+                {% elif LANGUAGE_CODE == "sl" %}🇸🇮
+                {% elif LANGUAGE_CODE == "sv" %}🇸🇪
+                {% elif LANGUAGE_CODE == "tr" %}🇹🇷
+                {% elif LANGUAGE_CODE == "uk" %}🇺🇦
+                {% else %}🌐{% endif %}
+              </a>
+
+              <ul class="dropdown-menu dropdown-menu-end lang-menu" aria-labelledby="languageDropdown">
+                {% for lang in LANGUAGES %}
+                  <li>
+                    <a class="dropdown-item" href="#" onclick="event.preventDefault(); document.getElementById('lang-{{ lang.0 }}').submit();">
+                      {% if lang.0 == "pt" %}🇵🇹
+                      {% elif lang.0 == "pt-br" %}🇧🇷
+                      {% elif lang.0 == "en" %}🇬🇧
+                      {% elif lang.0 == "es" %}🇪🇸
+                      {% elif lang.0 == "fr" %}🇫🇷
+                      {% elif lang.0 == "sq" %}🇦🇱
+                      {% elif lang.0 == "ar" %}🇸🇦
+                      {% elif lang.0 == "hy" %}🇦🇲
+                      {% elif lang.0 == "bs" %}🇧🇦
+                      {% elif lang.0 == "bg" %}🇧🇬
+                      {% elif lang.0 == "zh-hans" %}🇨🇳
+                      {% elif lang.0 == "hr" %}🇭🇷
+                      {% elif lang.0 == "da" %}🇩🇰
+                      {% elif lang.0 == "nl" %}🇳🇱
+                      {% elif lang.0 == "et" %}🇪🇪
+                      {% elif lang.0 == "fi" %}🇫🇮
+                      {% elif lang.0 == "de" %}🇩🇪
+                      {% elif lang.0 == "ka" %}🇬🇪
+                      {% elif lang.0 == "el" %}🇬🇷
+                      {% elif lang.0 == "hu" %}🇭🇺
+                      {% elif lang.0 == "is" %}🇮🇸
+                      {% elif lang.0 == "ga" %}🇮🇪
+                      {% elif lang.0 == "it" %}🇮🇹
+                      {% elif lang.0 == "ja" %}🇯🇵
+                      {% elif lang.0 == "ko" %}🇰🇷
+                      {% elif lang.0 == "lv" %}🇱🇻
+                      {% elif lang.0 == "lt" %}🇱🇹
+                      {% elif lang.0 == "mk" %}🇲🇰
+                      {% elif lang.0 == "nb" %}🇳🇴
+                      {% elif lang.0 == "pl" %}🇵🇱
+                      {% elif lang.0 == "ro" %}🇷🇴
+                      {% elif lang.0 == "ru" %}🇷🇺
+                      {% elif lang.0 == "sr" %}🇷🇸
+                      {% elif lang.0 == "sk" %}🇸🇰
+                      {% elif lang.0 == "sl" %}🇸🇮
+                      {% elif lang.0 == "sv" %}🇸🇪
+                      {% elif lang.0 == "tr" %}🇹🇷
+                      {% elif lang.0 == "uk" %}🇺🇦
+                      {% else %}🌐{% endif %}
+                      {{ lang.1 }}
+                    </a>
+                    <form id="lang-{{ lang.0 }}" action="{% url 'set_language' %}" method="post" style="display: none;">
+                      {% csrf_token %}
+                      <input type="hidden" name="language" value="{{ lang.0 }}">
+                      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+                    </form>
+                  </li>
+                {% endfor %}
+              </ul>
+            </li>
+
+          <li class="nav-item">
+            {% if user.is_authenticated %}
+              <a class="btn btn-outline-primary btn-sm" href="{% url 'account_panel' %}">{{ user.username }}</a>
+            {% else %}
+              <a class="btn btn-outline-secondary btn-sm" href="{% url 'account_panel' %}">{% trans "Account" %}</a>
+            {% endif %}
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+
+<main class="container mt-5 pt-5">
+{% if messages %}
+  <div class="container mt-4">
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags|default:"info" }} shadow-sm border-0 text-center" role="alert">
+        <div class="d-flex align-items-center justify-content-center">
+          {% if message.tags == "success" %}
+            <i class="bi bi-check-circle-fill text-success me-2 fs-5"></i>
+          {% elif message.tags == "error" or message.tags == "danger" %}
+            <i class="bi bi-x-circle-fill text-danger me-2 fs-5"></i>
+          {% elif message.tags == "warning" %}
+            <i class="bi bi-exclamation-triangle-fill text-warning me-2 fs-5"></i>
+          {% else %}
+            <i class="bi bi-info-circle-fill text-info me-2 fs-5"></i>
+          {% endif %}
+          <span>{{ message }}</span>
+        </div>
+        <button type="button" class="btn-close position-absolute end-0 top-50 translate-middle-y me-3" data-bs-dismiss="alert" aria-label="Close"></button>
+      </div>
+    {% endfor %}
+  </div>
+{% endif %}
+
+{% block content %}
+
+{% endblock %}
+</main>
+
+
+<footer class="bd-footer py-5 mt-5 bg-light">
+  <div class="container py-5">
+    <div class="row">
+
+      <!-- Coluna principal com logo e descrição -->
+      <div class="col-lg-3 mb-3">
+        <a class="d-inline-flex align-items-center mb-2 link-dark text-decoration-none" href="{% url 'home' %}" aria-label="IEV Platform">
+          <span class="fs-5 fw-bold">{% trans "IEV Platform" %}</span>
+        </a>
+
+        <ul class="list-unstyled small text-muted">
+            <li class="mb-2">{% trans "Created by José Carlos Magalhães, ISEP student." %}</li>
+            <li class="mb-2">{% trans "Supporting international terminology dissemination." %}</li>
+            <li class="mb-2">&copy; 2025 – {% trans "All rights reserved." %}</li>
+            <p>
+                <a href="https://www.isep.ipp.pt/" target="_blank" rel="noopener">
+                  <img src="{% static 'core/img/ISEPbanner.png' %}" class="img-fluid" alt="Banner IEVP" width="260" height="80" loading="lazy">
+                </a>
+            </p>
+        </ul>
+      </div>
+
+      <!-- Links principais -->
+      <div class="col-6 col-lg-2 offset-lg-1 mb-3">
+        <h5>{% trans "Pages" %}</h5>
+        <ul class="list-unstyled">
+
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'home' %}">{% trans "Home" %}</a></li>
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'area-list' %}">{% trans "Areas" %}</a></li>
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'subarea-list' %}">{% trans "Subareas" %}</a></li>
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'term-list' %}">{% trans "Terms" %}</a></li>
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'account_panel' %}">{% trans "Account panel" %}</a></li>
+        </ul>
+      </div>
+
+      <!-- Recursos -->
+      <div class="col-6 col-lg-2 mb-3">
+        <h5>{% trans "Resources" %}</h5>
+        <ul class="list-unstyled">
+            {% if user.is_authenticated %}
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'tutorial' %}">{% trans "Tutorials" %}</a></li>
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'documentation' %}">{% trans "Documentation" %}</a></li>
+            {% endif %}
+            <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'poster' %}">{% trans "Poster" %}</a></li>
+            {% if user.is_authenticated %}
+                <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'thesis' %}">{% trans "Dissertation" %}</a></li>
+            {% endif %}
+        </ul>
+      </div>
+
+      <!-- Comunidade -->
+      <div class="col-6 col-lg-2 mb-3">
+        <h5>{% trans "Community" %}</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a class="text-decoration-none link-dark" href="https://www.electropedia.org/">
+              {% trans "IEV Online - Electropedia" %}
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Administração -->
+      <div class="col-6 col-lg-2 mb-3">
+        <h5>{% trans "Administration" %}</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a class="text-decoration-none link-dark" href="{% url 'contacts' %}">{% trans "Contacts" %}</a></li>
+
+            {% if user.is_authenticated and is_admin_or_gestor %}
+                <li class="mb-2"><a class="text-decoration-none link-dark" href="/admin/">{% trans "Administrator panel" %}</a></li>
+            {% endif %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</footer>
+
+<!-- jQuery (necessário para Bootstrap Table) -->
+<script src="https://cdn.jsdelivr.net/npm/jquery/dist/jquery.min.js"></script>
+<!-- Bootstrap Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Bootstrap Table -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap-table@1.24.1/dist/bootstrap-table.min.js"></script>
+<!-- DataTables 2.3.2 JS -->
+<script src="https://cdn.datatables.net/2.3.2/js/dataTables.min.js"></script>
+
+<!-- Inicialização padrão do DataTables -->
+{% block datatables_init %}
+
+{# tive que ligar idioma a idioma porque dava erro ao usar a URL, as referências dos idiomas do django nao coincidem com o cdn.datatables.net/plug-ins/2.3.2/i18n/ #}
+<script>
+    const langMap = {
+        'en': 'en-GB',
+        'pt-br': 'pt-BR',
+        'pt-pt': 'pt',
+        'es': 'es-ES',
+        'fr': 'fr-FR'
+        // ordenado por nome do idioma em inglês
+        'sq':      'sq',       // Albanian
+        'ar':      'ar',       // Arabic
+        'hy':      'hy-AM',    // Armenian
+        'bs':      'bs-BA',    // Bosnian
+        'bg':      'bg',    // Bulgarian
+        'zh-hans': 'zh',    // Chinese (Simplified)
+        'hr':      'hr',    // Croatian
+        'da':      'da',    // Danish
+        'nl':      'nl-NL',    // Dutch
+        'et':      'et',    // Estonian
+        'fi':      'fi',    // Finnish
+        'de':      'de-DE',    // German
+        'ka':      'ka',    // Georgian
+        'el':      'el',    // Greek
+        'hu':      'hu',    // Hungarian
+        'is':      'is',    // Icelandic
+        'ga':      'ga',    // Irish
+        'it':      'it-IT',    // Italian
+        'ja':      'ja',       // Japanese
+        'ko':      'ko',       // Korean
+        'lv':      'lv',    // Latvian
+        'lt':      'lt',    // Lithuanian
+        'mk':      'mk',    // Macedonian
+        'nb':      'no-NB',    // Norwegian Bokmål  (no CDN é "no-NB.json")
+        'pl':      'pl',       // Polish
+        'ro':      'ro',    // Romanian
+        'ru':      'ru',       // Russian
+        'sr':      'sr',       // Serbian (Cyrillic no CDN)
+        'sk':      'sk',    // Slovak
+        'sl':      'sl',    // Slovenian
+        'sv':      'sv-SE',    // Swedish
+        'tr':      'tr-TR',    // Turkish
+        'uk':      'uk'     // Ukrainian
+
+        // Adicionar outros idiomas
+        // o código do idioma da esquerda tem que ser o do django, o da direita o do CDN.
+    };
+
+  const langCode = '{{ LANGUAGE_CODE|default:"en" }}'.toLowerCase();
+  const langFile = langMap[langCode] || 'en-GB';
+
+  console.log('A tentar carregar idioma:', langFile);
+
+  $(document).ready(function () {
+    $('.datatable').DataTable({
+      language: {
+        url: `https://cdn.datatables.net/plug-ins/2.3.2/i18n/${langFile}.json`
+      }
+    });
+  });
+</script>
+
+{% endblock %}
+
+{% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Terms" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+
+    {% if back_url %}
+        <a href="{{ back_url }}" class="btn btn-outline-secondary mt-0 mb-3">
+            <i class="bi bi-arrow-left"></i> {% trans "Back" %}
+        </a>
+    {% endif %}
+
+    {% if subarea %}
+        <div class="mb-4">
+            <p class="mb-2 text-muted">
+                <strong>{% trans "Filtering by" %}:</strong><br>
+                <strong>{% trans "Area" %}</strong> {{ subarea.area.id }} : {{ subarea.area.name }}<br>
+                <strong>{% trans "Subarea" %}</strong> {{ subarea.ref }} : {{ subarea.name }}
+            </p>
+        </div>
+    {% endif %}
+
+    <h2 class="mb-4">{% trans "Terms" %}</h2>
+
+    {% if terms %}
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th class="text-center">{% trans "IEV ref" %}</th>
+                    <th>{% trans "Term" %}</th>
+                    <th class="text-center">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for term in terms %}
+                    <tr>
+                        <td class="text-center">{{ term.ref }}</td>
+                        <td>{{ term.name|default:term.name_en }}</td>
+                        <td class="text-center">
+                            <a href="{% url 'term_detail' term.ref %}?{% if subarea_ref %}ref={{ subarea_ref }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_area_id %}area={{ selected_area_id }}{% endif %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-search"></i> {% trans "View Detail" %}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            {% trans "No terms found." %}
+        </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block datatables_init %}
+<script>
+  $(document).ready(function() {
+    $('.datatable').DataTable({
+      columnDefs: [
+        { targets: [2], searchable: false },  // Desativa pesquisa na coluna de Actions
+          { orderable: false, targets: 2 } // Desativa ordenação na 3ª coluna (Actions)
+      ]
+    });
+  });
+</script>
+{% endblock %}

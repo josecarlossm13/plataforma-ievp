@@ -1,0 +1,122 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{{ term_name }}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+
+  {% if back_url %}
+    <a href="{{ back_url }}" class="btn btn-outline-secondary mt-0 mb-3">
+      <i class="bi bi-arrow-left"></i> {% trans "Back" %}
+    </a>
+  {% endif %}
+
+  <div class="card shadow-sm mt-4">
+    <div class="card-body">
+
+      {# Cabeçalho: Termo + IEV #}
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            {% if term_name %}
+                <h3 class="mb-0">{{ term_name }}</h3>
+            {% else %}
+                <div class="alert alert-warning">
+                    {% trans "Term not available in this language." %}
+                </div>
+            {% endif %}
+            <span class="badge text-bg-light">
+            <i class="bi bi-hash me-1"></i> {% trans "IEV ref" %}: {{ term.ref }}
+            </span>
+        </div>
+
+      {# Contexto (Área/Subárea/Ref) #}
+      <div class="mb-4 pb-3 border-bottom">
+        <div class="small text-muted">
+          <div class="mb-1">
+            <i class="bi bi-diagram-3 me-1"></i>
+            <strong>{% trans "Area" %}:</strong> {{ subarea.area.id }} : {{ subarea.area.name }}
+          </div>
+          <div>
+            <i class="bi bi-diagram-2 me-1"></i>
+            <strong>{% trans "Subarea" %}:</strong> {{ subarea.ref }} : {{ subarea.name }}
+          </div>
+        </div>
+      </div>
+
+      {# Descrição #}
+        {% if term_description %}
+            <div class="mb-4 pb-3 border-bottom">
+                <h5 class="mb-2">
+                <i class="bi bi-card-text me-2"></i>{% trans "Description" %}
+                </h5>
+                <div class="mt-4">
+                    {{ term_description|safe }}
+                </div>
+            </div>
+        {% else %}
+            <div class="alert alert-warning">
+                {% trans "Description not available in this language." %}
+            </div>
+        {% endif %}
+
+      {# Imagem #}
+      {% if term.image %}
+        <div class="mb-4 pb-3 border-bottom">
+          <h5 class="mb-3">
+            <i class="bi bi-image me-2"></i>{% trans "Image" %}
+          </h5>
+          <img src="{{ term.image.url }}" alt="{{ term_name }}" class="img-fluid rounded border">
+        </div>
+      {% endif %}
+
+        {# Fonte + Data (em grelha) #}
+        <div class="mb-4 pb-3 border-bottom">
+            <div class="row g-3">
+                {% if term.source %}
+                    <div class="col-12">
+                        <div class="small">
+                            <i class="bi bi-journal-text me-1"></i>
+                            <strong>{% trans "Source" %}:</strong>
+                            <span class="text-muted">{{ term.source }}</span>
+                        </div>
+                    </div>
+                {% endif %}
+                {% if term_published_at %}
+                    <div class="col-12 col-md-6">
+                      <div class="small">
+                        <i class="bi bi-calendar-plus me-1"></i>
+                        <strong>{% trans "Added to IEVP (this language)" %}:</strong>
+                        <span class="text-muted">
+                          {{ term_published_at|date:"d-m-Y" }}
+                        </span>
+                      </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+      {# Extra (collapse) #}
+      {% if term_extra %}
+        <div class="mt-2">
+          <button
+            class="btn btn-outline-info"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#termExtraContent"
+            aria-expanded="false"
+            aria-controls="termExtraContent">
+              {% trans "Additional Content" %}
+          </button>
+
+          <div class="collapse mt-3" id="termExtraContent">
+            <div class="card card-body">
+              {{ term_extra|safe }}
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+    </div>
+  </div>
+</div>
+{% endblock %}

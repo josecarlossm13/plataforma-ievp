@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "E-mail verification sent" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-8 col-lg-8">
+      <div class="card shadow-sm">
+        <div class="card-body text-center">
+            <h4 class="mb-3 text-primary">
+                <i class="bi bi-envelope-exclamation text-primary me-2"></i>
+                {% trans "Verify your e-mail address" %}
+            </h4>
+
+            <p class="text-muted mb-0">
+            {% trans "We have sent you an e-mail with a confirmation link." %}
+            <br>
+            {% trans "Please check your e-mail inbox and click the link to activate your account." %}
+            </p>
+
+          <div class="mt-4">
+              <div class="row g-3 align-items-center">
+                <!-- Botão: Return to login -->
+                <div class="col-md-4">
+                  <a href="{% url 'account_login' %}" class="btn btn-outline-primary w-100 d-flex align-items-center justify-content-center py-2">
+                    <i class="bi bi-box-arrow-in-right me-2"></i>
+                    {% trans "Return to login" %}
+                  </a>
+                </div>
+
+                <!-- Form: Resend verification -->
+                <div class="col-md-8">
+                  <form method="post" action="{% url 'account_resend_verification' %}">
+                    {% csrf_token %}
+                    <div class="input-group">
+                      <input type="e-mail"
+                             name="e-mail"
+                             class="form-control"
+                             placeholder="{% trans 'Your e-mail' %}"
+                             required>
+                      <button class="btn btn-outline-secondary d-flex align-items-center" type="submit">
+                        <i class="bi bi-arrow-repeat me-2"></i>
+                        {% trans "Resend verification" %}
+                      </button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Contacts" %}{% endblock %}
+
+{% block content %}
+  <div class="container mt-5">
+    <h2 class="mb-4"><i class="bi bi-person-lines-fill"></i> {% trans "Contact Information" %}</h2>
+
+    <!-- ContactTopMessage, mensagens a mostrar na página contacts -->
+    {% if top_messages %}
+      <div class="text-center mb-4">
+        {% for message in top_messages %}
+          <div class="alert alert-info shadow-sm border-0 mb-2"><i class="bi bi-info-circle me-2"></i>
+            {{ message.text }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if contacts %}
+      <div class="row row-cols-1 row-cols-md-2 g-4">
+        {% for contact in contacts %}
+          <div class="col">
+            <div class="card h-100 shadow-sm">
+              <div class="card-body">
+                {% if contact.details %}
+                  <p class="card-subtitle text-muted small mb-1">{{ contact.details }}</p>
+                {% endif %}
+                <h5 class="card-title">{{ contact.name }}</h5>
+                <p class="card-text">
+                </p>
+              </div>
+              <div class="card-footer bg-transparent border-0 text-end">
+                <a href="mailto:{{ contact.email }}" class="btn btn-outline-primary btn-sm">
+                    <i class="bi bi-send me-2"></i>
+                  {% trans "Send e-mail" %}
+                </a>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p class="text-muted">{% trans "No contact information available." %}</p>
+    {% endif %}
+  </div>
+{% endblock %}

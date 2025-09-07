@@ -1,0 +1,24 @@
+# Dependências, versões instaladas
+Django==5.2.1 # https://github.com/django/django
+django-modeltranslation==0.19.15 # https://github.com/deschler/django-modeltranslation
+django-rosetta==0.10.2 # https://github.com/mbi/django-rosetta
+pillow==11.2.1 # https://python-pillow.github.io
+psycopg==3.2.9 # https://psycopg.org/psycopg3/
+psycopg-binary==3.2.9 # https://psycopg.org/psycopg3/
+django-ckeditor==6.7.3 # https://github.com/django-ckeditor/django-ckeditor
+django-import-export==4.3.7 # https://github.com/django-import-export/django-import-export
+django-reversion==5.1.0 # https://github.com/etianen/django-reversion
+django-extensions==4.1 # https://github.com/django-extensions/django-extensions
+django-model-utils==5.0.0 # https://github.com/jazzband/django-model-utils
+django-allauth==65.10.0 # https://github.com/pennersr/django-allauth
+django-crispy-forms==2.4 # https://github.com/django-crispy-forms/django-crispy-forms
+crispy-bootstrap5==2025.6 # https://github.com/django-crispy-forms/crispy-bootstrap5
+dj-database-url==3.0.1
+gunicorn==23.0.0
+whitenoise==6.9.0
+python-dotenv==1.0.1
+django-anymail[resend]==13.0.1
+openpyxl==3.1.5
+tablib[all]==3.8.0
+django-storages==1.14.6
+google-cloud-storage==3.3.1

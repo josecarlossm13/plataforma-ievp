@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Subject areas" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+
+    {% if back_url %}
+        <a href="{{ back_url }}" class="btn btn-outline-secondary mt-0 mb-3">
+            <i class="bi bi-arrow-left"></i> {% trans "Back" %}
+        </a>
+    {% endif %}
+
+    <h2 class="mb-4">{% trans "Subject areas" %}</h2>
+
+    {% if areas %}
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th class="text-center">{% trans "Area ID" %}</th>
+                    <th>{% trans "Area" %}</th>
+                    <th class="text-center">{% trans "Subareas" %}</th>
+                    <th class="text-center">{% trans "Terms" %}</th>
+                    <th class="text-center">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for area in areas %}
+                    <tr>
+                        <td class="text-center">{{ area.id }}</td>
+                        <td>{{ area.name }}</td>
+                        <td class="text-center">{{ area.subarea_count }}</td>
+                        <td class="text-center">{{ area.term_count }}</td>
+
+                        <td class="text-center">
+                            <a href="{% url 'subarea-list-by-area' area.id %}" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-diagram-3"></i> {% trans "View Subareas" %}
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            {% trans "No areas found." %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{# scrip para a data table não pesquisar na coluna 2, 3, 4 (Nº de subareas, Nº de termos, view subareas #}
+{% block datatables_init %}
+<script>
+  $(document).ready(function() {
+    $('.datatable').DataTable({
+      columnDefs: [
+        { targets: [2, 3, 4], searchable: false },  // Desativa pesquisa nas colunas de contagem e View subareas
+          { orderable: false, targets: 4 }, // Desativa ordenação na 5ª coluna (View subareas)
+          { width: '10%', targets: 0 },   // tamanho para "Area ID"
+          { width: '12%', targets: 4 }   // tamanho para "View subareas"
+      ]
+    });
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "My Account" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+  <h2 class="mb-4"><i class="bi bi-person-vcard"></i> {% trans "Account Panel" %}</h2>
+
+  {% if is_sem_acesso %}
+    <div class="alert alert-warning shadow-sm border-0 text-center mb-4">
+      <i class="bi bi-hourglass-split me-2 fs-4"></i>
+      <strong>{% trans "Pending Approval" %}</strong>
+      <p class="mb-0 mt-2 text-muted">
+        {% trans "Your account is pending approval by an administrator. Please wait until your access is granted." %}
+      </p>
+    </div>
+  {% endif %}
+
+  <!-- AMBAS AS COLUNAS DENTRO DA MESMA ROW -->
+  <div class="row g-4">
+
+    <!-- Account Details -->
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+            <!-- Título do Card -->
+            <h5 class="card-title mb-4">
+                <i class="bi bi-person-circle me-2"></i>{% trans "Account Details" %}
+            </h5>
+            <div class="row">
+                <!-- Coluna esquerda: E-mail + Role -->
+                <div class="col-md-6">
+                  <!-- E-mail -->
+                  <div class="mb-4">
+                    <div class="d-flex align-items-center mb-1">
+                      <i class="bi bi-envelope me-2 text-secondary"></i>
+                      <strong>{% trans "E-mail" %}</strong>
+                    </div>
+                    <div class="ps-4 text-muted">
+                      {{ user.email }}
+                    </div>
+                  </div>
+
+                  <!-- Role -->
+                  <div>
+                    <strong class="d-block mb-2">
+                      <i class="bi bi-person-gear me-2 text-secondary"></i>
+                      {% trans "Role" %}
+                    </strong>
+                    <div class="ps-4">
+                        {% if user.is_staff %}
+                          <span class="badge rounded-pill bg-info text-dark me-1">{% trans "Staff" %}</span>
+                        {% endif %}
+
+                        {% if user.is_superuser %}
+                          <span class="badge rounded-pill bg-danger me-1">{% trans "Superuser" %}</span>
+                        {% endif %}
+
+                        {% if roles %}
+                          {% for role in roles %}
+                            <span class="badge rounded-pill bg-secondary me-1">{{ role }}</span>
+                          {% endfor %}
+                        {% else %}
+                            <span class="text-muted">{% trans "No role assigned." %}</span>
+                        {% endif %}
+                    </div>
+                  </div>
+                </div>
+                <!-- Coluna direita: Name -->
+                <div class="col-md-6">
+                  <!-- First name -->
+                  <div class="mb-4">
+                    <div class="d-flex align-items-center mb-1">
+                      <i class="bi bi-person me-2 text-secondary"></i>
+                      <strong>{% trans "First name" %}</strong>
+                    </div>
+                    <div class="ps-4 text-muted">
+                      {{ user.first_name}}
+                    </div>
+                  </div>
+                  <!-- Last name -->
+                  <div>
+                    <div class="d-flex align-items-center mb-1">
+                      <i class="bi bi-person-lines-fill me-2 text-secondary"></i>
+                      <strong>{% trans "Last name" %}</strong>
+                    </div>
+                    <div class="ps-4 text-muted">
+                      {{ user.last_name}}
+                    </div>
+                  </div>
+                </div>
+            </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Account Actions -->
+    <div class="col-12 col-lg-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h5 class="card-title mb-3">
+            <i class="bi bi-gear me-2"></i>{% trans "Manage your account" %}
+          </h5>
+
+          <div class="d-flex flex-column gap-2">
+            <a href="{% url 'account_change_password' %}" class="btn btn-outline-primary">
+              <i class="bi bi-key me-2"></i> {% trans "Change password" %}
+            </a>
+
+            <a href="{% url 'account_reset_password' %}" class="btn btn-outline-warning text-dark">
+              <i class="bi bi-question-circle me-2"></i> {% trans "Forgot password?" %}
+            </a>
+
+            <a href="{% url 'account_logout' %}" class="btn btn-outline-danger">
+              <i class="bi bi-box-arrow-right me-2"></i> {% trans "Log out" %}
+            </a>
+
+            <a href="{% url 'home' %}" class="btn btn-outline-secondary">
+              <i class="bi bi-house-door me-2"></i> {% trans "Back to Home" %}
+            </a>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}

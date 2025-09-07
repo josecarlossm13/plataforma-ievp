@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans "Dissertation" %}{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+
+        <!-- Título -->
+        <h2 class="mb-4">
+        <i class="bi bi-mortarboard me-2"></i>
+        {% if thesis %}
+          {{ thesis.title }}
+        {% else %}
+          {% trans "Dissertation" %}
+        {% endif %}
+        </h2>
+
+        {% if thesis %}
+            <!-- Card com conteúdo -->
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    {% if thesis.description %}
+                        <div class="mb-3">
+                          {{ thesis.description|safe }}
+                        </div>
+                    {% endif %}
+
+                    <a href="{{ thesis.file.url }}" class="btn btn-outline-success" target="_blank" download>
+                      <i class="bi bi-download me-1"></i> {% trans "Download dissertation" %}
+                    </a>
+                </div>
+            </div>
+        {% else %}
+            <span class="text-muted">{% trans "Dissertation not available." %}</span>
+        {% endif %}
+    </div>
+
+{% endblock %}

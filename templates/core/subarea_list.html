@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+{% load static i18n %}
+
+{% block title %}{% trans "Subareas" %}{% endblock %}
+
+{% block content %}
+<div class="container mt-1">
+
+    {% if back_url %}
+        <a href="{{ back_url }}" class="btn btn-outline-secondary mt-0 mb-3">
+            <i class="bi bi-arrow-left"></i> {% trans "Back" %}
+        </a>
+    {% endif %}
+
+    {% if area %}
+        <p class="mb-2 text-muted">
+            <strong>{% trans "Filtering by" %}:</strong><br>
+            <strong>{% trans "Area" %}</strong> {{ area.id }} : {{ area.name }}
+        </p>
+    {% endif %}
+
+    <h2 class="mb-4">{% trans "Subareas" %}</h2>
+
+    {% if subareas %}
+        <table class="table table-striped datatable">
+            <thead>
+                <tr>
+                    <th class="text-center">{% trans "Subarea ID" %}</th>
+                    <th>{% trans "Subarea" %}</th>
+                    <th class="text-center">{% trans "Terms" %}</th>    {# Contagem de termos  #}
+                    <th class="text-center">{% trans "Actions" %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for subarea in subareas %}
+                    <tr>
+                        <td class="text-center">{{ subarea.ref }}</td>
+                        <td>{{ subarea.name|default:subarea.name_en }}</td>
+                        <td class="text-center">{{ subarea.term_count }}</td>   {# Contagem de termos  #}
+                        <td class="text-center">
+
+
+                            <a href="{% url 'term-list-by-subarea' subarea.ref %}?q={{ query }}&area={{ selected_area_id }}" class="btn btn-sm btn-outline-primary">
+                              <i class="bi bi-search"></i> {% trans "View Terms" %}
+                            </a>
+
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <div class="alert alert-warning">
+            {% trans "No subareas found." %}
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+{# scrip para a data table não pesquisar na coluna 2 e 3 (Nº de termos, view terms #}
+{% block datatables_init %}
+<script>
+  $(document).ready(function() {
+    $('.datatable').DataTable({
+      columnDefs: [
+        { targets: [2, 3], searchable: false },  // Desativa pesquisa na coluna de contagem
+          { orderable: false, targets: 3 } // Desativa ordenação na 4ª coluna (View terms)
+      ]
+    });
+  });
+</script>
+{% endblock %}

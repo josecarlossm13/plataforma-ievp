@@ -1,0 +1,58 @@
+/* plataforma/static/core/styles.css */
+a {
+    text-decoration: none; /* Remove o sublinhado dos links */
+}
+
+/* Uniformizar altura dos campos e botões na navbar */
+.navbar .form-control,
+.navbar .form-select,
+.navbar .btn-sm {
+  height: 32px;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  border-radius: 0.25rem;
+}
+
+/* Corrigir alinhamento vertical navbar */
+.navbar .form-control,
+.navbar .form-select {
+  margin-bottom: 0 !important;
+}
+
+/* Remover asterisco dos campos obrigatórios */
+.asteriskField {
+    display: none;
+}
+
+/* Garante que qualquer float dentro da descrição não afete o que vem a seguir */
+.poster-description::after {
+  content: "";
+  display: block;
+  clear: both;
+}
+
+/* Scroll no Dropdown de idiomas */
+.lang-menu {
+  max-height: 60vh;               /* até 60% da altura do ecrã */
+  overflow-y: auto;               /* scroll vertical */
+  -webkit-overflow-scrolling: touch; /* scroll suave no iOS */
+}
+
+/* Se algum nome de idioma for comprido, deixa quebrar linha */
+.lang-menu .dropdown-item {
+  white-space: normal;
+}
+
+/* Fundo com padrão de circuitos  */
+body.site {
+/*body {*/
+  /*  para baixar o contraste do padrão (ajustar o 0.88) */
+  background-image:
+    linear-gradient(rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.5)),
+    var(--bg-url);
+    /*url("plataforma/static/core/img/circuit-bg.PNG"); !* caminho relativo ao CSS *!*/
+  background-repeat: repeat;
+  background-size: 480px auto;     /* altera a “densidade” do padrão */
+  background-attachment: fixed;    /* efeito parallax suave */
+}
