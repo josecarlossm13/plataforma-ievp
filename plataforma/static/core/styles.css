@@ -51,7 +51,6 @@ body.site {
   background-image:
     linear-gradient(rgba(248, 249, 250, 0.88), rgba(248, 249, 250, 0.5)),
     var(--bg-url);
-    /*url("plataforma/static/core/img/circuit-bg.PNG"); !* caminho relativo ao CSS *!*/
   background-repeat: repeat;
   background-size: 480px auto;     /* altera a “densidade” do padrão */
   background-attachment: fixed;    /* efeito parallax suave */
