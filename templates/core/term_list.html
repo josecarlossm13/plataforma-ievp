@@ -37,7 +37,7 @@
                 {% for term in terms %}
                     <tr>
                         <td class="text-center">{{ term.ref }}</td>
-                        <td>{{ term.name|default:term.name_en }}</td>
+                        <td>{{ term.name }}</td>
                         <td class="text-center">
                             <a href="{% url 'term_detail' term.ref %}?{% if subarea_ref %}ref={{ subarea_ref }}&{% endif %}{% if search_query %}q={{ search_query }}&{% endif %}{% if selected_area_id %}area={{ selected_area_id }}{% endif %}" class="btn btn-sm btn-outline-primary">
                                 <i class="bi bi-search"></i> {% trans "View Detail" %}

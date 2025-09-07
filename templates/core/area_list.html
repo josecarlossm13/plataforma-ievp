@@ -30,7 +30,7 @@
                 {% for area in areas %}
                     <tr>
                         <td class="text-center">{{ area.id }}</td>
-                        <td>{{ area.name }}</td>
+                        <td>{{ area.name | default:area.name_en }}</td>
                         <td class="text-center">{{ area.subarea_count }}</td>
                         <td class="text-center">{{ area.term_count }}</td>
 
