@@ -94,9 +94,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    #### localmente###
-    #'whitenoise.middleware.WhiteNoiseMiddleware',
-    #############################
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',                # Talvez faltasse este middleware. Permitia ao django usar o request.LANGUAGE_CODE e determinar automaticamente o idioma da interface
     'django.contrib.auth.middleware.AuthenticationMiddleware',
